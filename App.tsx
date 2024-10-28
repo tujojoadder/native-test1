@@ -17,7 +17,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './components/Home';
 import Login from './components/Login';
-
+import {View, Text, Button} from 'react-native';
 export default function App() {
   const Stack = createNativeStackNavigator();
 
@@ -26,30 +26,33 @@ export default function App() {
       <Stack.Navigator
         initialRouteName="home"
         screenOptions={{
-         
           headerTintColor: 'red',
+
           animation: 'fade',
 
           headerTitleStyle: {
             fontSize: 17,
           },
         }}>
-        <Stack.Screen name="home" options={{
+        <Stack.Screen
+          name="home"
+          options={{
             title: 'My Home',
+            headerTitle: () => <Button title="Button"></Button>,
+            headerRight: () => <Button title="Red"></Button>,
+            headerTintColor: 'tomato',
+          }}
+          component={Home}
+        />
 
-          }} component={Home} />
-        
-        
         <Stack.Screen
           name="login"
           component={Login}
           options={{
             title: 'My Login',
-
           }}
         />
-        
-        
+
         <Stack.Screen
           name="Pressables"
           component={Pressables}
@@ -57,7 +60,6 @@ export default function App() {
             title: 'Pressable',
 
             headerTintColor: 'black',
-
           }}
         />
 
@@ -73,6 +75,16 @@ export default function App() {
         {/* <ActivityIndicators/> */}
         {/*  <WebView/>   */}
       </Stack.Navigator>
+
+
+
+
+
+
+
+
+
+      
     </NavigationContainer>
   );
 }

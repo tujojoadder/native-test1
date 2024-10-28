@@ -18,6 +18,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from './components/Home';
 import Login from './components/Login';
 import {View, Text, Button} from 'react-native';
+import TabTop from './components/TabTop';
 export default function App() {
   const Stack = createNativeStackNavigator();
 
@@ -63,6 +64,17 @@ export default function App() {
           }}
         />
 
+
+        <Stack.Screen
+          name="tabtop"
+          component={TabTop}
+          options={{
+            title: 'TabTop',
+
+            headerTintColor: 'black',
+          }}
+        />
+
         {/* <NormalButton />
       {/* <Pressables /> */}
         {/*  <ProfessionalButtons /> */}
@@ -75,16 +87,6 @@ export default function App() {
         {/* <ActivityIndicators/> */}
         {/*  <WebView/>   */}
       </Stack.Navigator>
-
-
-
-
-
-
-
-
-
-      
     </NavigationContainer>
   );
 }

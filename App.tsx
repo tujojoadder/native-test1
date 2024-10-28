@@ -1,5 +1,5 @@
 import React from 'react';
-import {WebView} from 'react-native-webview';
+
 import NormalButton from './components/NormalButton/NormalButton';
 import Pressables from './components/Pressable/Pressables';
 import ProfessionalButtons from './components/TouchableHighlight/TouchableHighlightComponent';
@@ -11,21 +11,68 @@ import Form from './components/Form/Form';
 import Flex from './components/Flex/Flex';
 import FlatLists from './components/FlatList/FlatLists';
 import ActivityIndicators from './components/ActivityIndicator/ActivityIndicators';
+import WebView from './components/WebView/WebView';
+import StackNavigation from './components/StackNavigation/StackNavigation';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Home from './components/Home';
+import Login from './components/Login';
 
 export default function App() {
-  return (
-    <>
+  const Stack = createNativeStackNavigator();
 
-      {/* <NormalButton /> */}
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="home"
+        screenOptions={{
+         
+          headerTintColor: 'red',
+          animation: 'fade',
+
+          headerTitleStyle: {
+            fontSize: 17,
+          },
+        }}>
+        <Stack.Screen name="home" options={{
+            title: 'My Home',
+
+          }} component={Home} />
+        
+        
+        <Stack.Screen
+          name="login"
+          component={Login}
+          options={{
+            title: 'My Login',
+
+          }}
+        />
+        
+        
+        <Stack.Screen
+          name="Pressables"
+          component={Pressables}
+          options={{
+            title: 'Pressable',
+
+            headerTintColor: 'black',
+
+          }}
+        />
+
+        {/* <NormalButton />
       {/* <Pressables /> */}
-      {/*  <ProfessionalButtons /> */}
-      {/* <MySectionList/> */}
-      {/* <MapList/> */}
-      {/* <Grid/> */}
-      {/* <Form/> */}
-      {/* <Flex/> */}
-      {/* <FlatLists/> */}
-      {/* <ActivityIndicators/> */}
-    </>
+        {/*  <ProfessionalButtons /> */}
+        {/* <MySectionList/> */}
+        {/* <MapList/> */}
+        {/* <Grid/> */}
+        {/* <Form/> */}
+        {/* <Flex/> */}
+        {/* <FlatLists/> */}
+        {/* <ActivityIndicators/> */}
+        {/*  <WebView/>   */}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

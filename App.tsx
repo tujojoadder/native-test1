@@ -19,74 +19,24 @@ import Home from './components/Home';
 import Login from './components/Login';
 import {View, Text, Button} from 'react-native';
 import TabTop from './components/TabTop';
+import { Provider } from 'react-redux';
+import { store } from './src/store';
+import Group from './components/Group/Group';
+if (__DEV__) {
+  require("./ReactotronConfig");
+}
 export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
+    
+    <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="home"
-        screenOptions={{
-          headerTintColor: 'red',
-
-          animation: 'fade',
-
-          headerTitleStyle: {
-            fontSize: 17,
-          },
-        }}>
-        <Stack.Screen
-          name="home"
-          options={{
-            title: 'My Home',
-            headerTitle: () => <Button title="Button"></Button>,
-            headerRight: () => <Button title="Red"></Button>,
-            headerTintColor: 'tomato',
-          }}
-          component={Home}
-        />
-
-        <Stack.Screen
-          name="login"
-          component={Login}
-          options={{
-            title: 'My Login',
-          }}
-        />
-
-        <Stack.Screen
-          name="Pressables"
-          component={Pressables}
-          options={{
-            title: 'Pressable',
-
-            headerTintColor: 'black',
-          }}
-        />
 
 
-        <Stack.Screen
-          name="tabtop"
-          component={TabTop}
-          options={{
-            title: 'TabTop',
-
-            headerTintColor: 'black',
-          }}
-        />
-
-        {/* <NormalButton />
-      {/* <Pressables /> */}
-        {/*  <ProfessionalButtons /> */}
-        {/* <MySectionList/> */}
-        {/* <MapList/> */}
-        {/* <Grid/> */}
-        {/* <Form/> */}
-        {/* <Flex/> */}
-        {/* <FlatLists/> */}
-        {/* <ActivityIndicators/> */}
-        {/*  <WebView/>   */}
-      </Stack.Navigator>
+<Group/>
+     
     </NavigationContainer>
+    </Provider>
   );
 }

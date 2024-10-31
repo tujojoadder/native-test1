@@ -1,17 +1,24 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
-import { useGetRandomGroupPostQuery } from '../../src/services/groupsApi';
+import React, {useState, useEffect, useCallback} from 'react';
+import {
+  View,
+  Text,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+} from 'react-native';
+import {useGetRandomGroupPostQuery} from '../../src/services/groupsApi';
 
 export default function Group() {
   const [page, setPage] = useState(1);
   const [allPosts, setAllPosts] = useState([]);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
-  const { data, isFetching, isError, isSuccess ,isLoading} = useGetRandomGroupPostQuery(page);
+  const {data, isFetching, isError, isSuccess, isLoading} =
+    useGetRandomGroupPostQuery(page);
 
-if (isSuccess) {
-  console.log(data);
-}
+  if (isSuccess) {
+    console.log(data);
+  }
 
   useEffect(() => {
     if (isSuccess && data?.data) {
@@ -19,25 +26,23 @@ if (isSuccess) {
         setHasMorePosts(false);
       } else {
         const newPosts = data.data.filter(
-          (newPost) =>
-            !allPosts.some((post) => post.post_id === newPost.post_id)
+          newPost => !allPosts.some(post => post.post_id === newPost.post_id),
         );
         if (newPosts.length > 0) {
-          setAllPosts((prevPosts) => [...prevPosts, ...newPosts]);
+          setAllPosts(prevPosts => [...prevPosts, ...newPosts]);
         }
       }
     }
   }, [data, isSuccess]);
-  
 
   const loadMorePosts = useCallback(() => {
     if (hasMorePosts && !isFetching && !isError) {
       console.log('Loading more posts for page:', page + 1);
-      setPage((prevPage) => prevPage + 1);
+      setPage(prevPage => prevPage + 1);
     }
-  }, [hasMorePosts,isSuccess, isFetching, isError, page]);
+  }, [hasMorePosts, isSuccess, isFetching, isError, page]);
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <View style={styles.postContainer}>
       <Text style={styles.postText}>Post ID: {item.post_id}</Text>
     </View>
@@ -45,22 +50,33 @@ if (isSuccess) {
 
   return (
     <View style={styles.container}>
-      {/* Show ActivityIndicator only for initial load */}
-      {isLoading &&  (
+      {/* Centered ActivityIndicator for initial load */}
+    {isLoading && (
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#0000ff" />
-      )}
+      </View>
+    )}
       {isError && <Text style={styles.errorText}>Failed to fetch posts.</Text>}
 
       <FlatList
         data={allPosts}
         renderItem={renderItem}
-        keyExtractor={(item) => item.post_id.toString()}
+        keyExtractor={item => item.post_id.toString()}
         onEndReached={loadMorePosts}
-        
         ListFooterComponent={() =>
-          isFetching && allPosts.length > 0 && <ActivityIndicator size="large" color="#0000ff" />
+          isFetching &&
+          allPosts.length > 0 && (
+            <ActivityIndicator size="large" color="#0000ff" />
+          )
         }
-        contentContainerStyle={allPosts.length === 0 ? styles.emptyList : null} // Handle empty list styling
+
+            // Conditionally show the ListEmptyComponent only if data has been fetched
+            ListEmptyComponent={() =>
+              !isLoading && !isFetching ? (
+                <Text style={styles.emptyText}>No posts available</Text>
+              ) : null
+            }
+        contentContainerStyle={allPosts.length === 0  ? styles.emptyList : null} // Handle empty list styling
       />
     </View>
   );
@@ -71,6 +87,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 10,
+    
+  },
+
+  loadingContainer:{
+    ...StyleSheet.absoluteFillObject,  // This covers the entire screen
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',  // Optional: adds a light overlay effect
   },
   postContainer: {
     padding: 15,

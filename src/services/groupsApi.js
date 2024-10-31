@@ -11,7 +11,7 @@ export const groupsApi = createApi({
   reducerPath: "groupsApi",
   baseQuery: fetchBaseQuery({
   
-    baseUrl: "http://192.168.0.200:8000/api", 
+    baseUrl: "http://192.168.43.131:8000/api", 
     prepareHeaders: (headers) => {
       if (userToken) {
         headers.set("authorization", `Bearer ${userToken}`);

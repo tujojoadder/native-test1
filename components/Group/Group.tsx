@@ -7,37 +7,35 @@ export default function Group() {
   const [allPosts, setAllPosts] = useState([]);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
-  const { data, isFetching, isError, isSuccess } = useGetRandomGroupPostQuery(page);
+  const { data, isFetching, isError, isSuccess ,isLoading} = useGetRandomGroupPostQuery(page);
+
+if (isSuccess) {
+  console.log(data);
+}
 
   useEffect(() => {
-    if (isSuccess && data) {
-      console.log('Fetched Data:', data);
-
-      // Check if no posts were returned
-      if (data.data && data.data.length === 0) {
+    if (isSuccess && data?.data) {
+      if (data.data.length === 0) {
         setHasMorePosts(false);
-      } else if (data.data) {
+      } else {
         const newPosts = data.data.filter(
-          (newPost) => !allPosts.some((post) => post.post_id === newPost.post_id)
+          (newPost) =>
+            !allPosts.some((post) => post.post_id === newPost.post_id)
         );
-
         if (newPosts.length > 0) {
           setAllPosts((prevPosts) => [...prevPosts, ...newPosts]);
         }
       }
     }
-
-    if (isError) {
-      console.log('Error fetching data:', data);
-    }
-  }, [data, isSuccess, isError]);
+  }, [data, isSuccess]);
+  
 
   const loadMorePosts = useCallback(() => {
     if (hasMorePosts && !isFetching && !isError) {
       console.log('Loading more posts for page:', page + 1);
       setPage((prevPage) => prevPage + 1);
     }
-  }, [hasMorePosts, isFetching, isError, page]);
+  }, [hasMorePosts,isSuccess, isFetching, isError, page]);
 
   const renderItem = ({ item }) => (
     <View style={styles.postContainer}>
@@ -48,7 +46,7 @@ export default function Group() {
   return (
     <View style={styles.container}>
       {/* Show ActivityIndicator only for initial load */}
-      {isFetching && allPosts.length === 0 && (
+      {isLoading &&  (
         <ActivityIndicator size="large" color="#0000ff" />
       )}
       {isError && <Text style={styles.errorText}>Failed to fetch posts.</Text>}
@@ -58,9 +56,9 @@ export default function Group() {
         renderItem={renderItem}
         keyExtractor={(item) => item.post_id.toString()}
         onEndReached={loadMorePosts}
-        onEndReachedThreshold={0.4} // Trigger loading sooner
+        
         ListFooterComponent={() =>
-          isFetching && allPosts.length > 0 && <ActivityIndicator size="small" color="#0000ff" />
+          isFetching && allPosts.length > 0 && <ActivityIndicator size="large" color="#0000ff" />
         }
         contentContainerStyle={allPosts.length === 0 ? styles.emptyList : null} // Handle empty list styling
       />

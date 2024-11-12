@@ -1,9 +1,8 @@
 // Need to use the React-specific entry point to import createApi
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-{/* import Cookies from "js-cookie"; */}
-
+import {REACT_APP_LARAVEL_URL} from '@env';
 // Retrieve the token from cookies
-const userToken = '103|GfThsGt6fYQD1UtYNr0zNn6GEbOGOP2Co5y5p0EQ09e1b790';
+const userToken = '120|ZP8C4dGETwsCGSNS8vlH5uxAb8uIADrTyhxYvbWXd8d5a1b1';
 
 // Define a service using a base URL and expected endpoints
 
@@ -11,7 +10,7 @@ export const groupsApi = createApi({
   reducerPath: "groupsApi",
   baseQuery: fetchBaseQuery({
   
-    baseUrl: "http://192.168.43.131:8000/api", 
+    baseUrl: `${REACT_APP_LARAVEL_URL}/api`, 
     prepareHeaders: (headers) => {
       if (userToken) {
         headers.set("authorization", `Bearer ${userToken}`);

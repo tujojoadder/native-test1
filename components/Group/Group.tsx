@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -6,19 +6,15 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
-import {useGetRandomGroupPostQuery} from '../../src/services/groupsApi';
+import { useGetRandomGroupPostQuery } from '../../src/services/groupsApi';
+import {REACT_APP_LARAVEL_URL} from '@env';
 
 export default function Group() {
   const [page, setPage] = useState(1);
   const [allPosts, setAllPosts] = useState([]);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
-  const {data, isFetching, isError, isSuccess, isLoading} =
-    useGetRandomGroupPostQuery(page);
-
-  if (isSuccess) {
-    console.log(data);
-  }
+  const { data, isFetching,error, isError, isSuccess, isLoading } = useGetRandomGroupPostQuery(page);
 
   useEffect(() => {
     if (isSuccess && data?.data) {
@@ -42,16 +38,28 @@ export default function Group() {
     }
   }, [hasMorePosts, isFetching, isError, page]);
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <View style={styles.postContainer}>
       <Text style={styles.postText}>Post ID: {item.post_id}</Text>
     </View>
   );
 
+  // Add a new state for handling the initial load state
+  const [isInitialLoadComplete, setIsInitialLoadComplete] = useState(false);
+
+  // Mark the initial load as complete when the first successful fetch occurs
+  useEffect(() => {
+    if (isSuccess && data?.data) {
+      setIsInitialLoadComplete(true);
+    }
+  }, [isSuccess, data]);
+
   return (
     <View style={styles.container}>
-      {/* Centered ActivityIndicator for initial load */}
-      {isLoading && (
+
+    <Text>{REACT_APP_LARAVEL_URL}</Text>
+     
+      {isLoading && !isInitialLoadComplete && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#0000ff" />
         </View>
@@ -63,22 +71,17 @@ export default function Group() {
         keyExtractor={item => item.post_id.toString()}
         onEndReached={loadMorePosts}
         ListFooterComponent={() =>
-          isFetching &&
-          allPosts.length > 0 && (
+          isFetching && allPosts.length > 0 && (
             <ActivityIndicator size="large" color="#0000ff" />
           )
         }
-        // Conditionally show the ListEmptyComponent only if data has been fetched
         ListEmptyComponent={() =>
-          !isLoading && !isFetching ? (
+          !isLoading && !isFetching && allPosts.length === 0 && isInitialLoadComplete ? (
             <Text style={styles.emptyText}>No posts available</Text>
           ) : null
         }
         contentContainerStyle={allPosts.length === 0 ? styles.emptyList : null} // Handle empty list styling
-      
-    
-      
-        />
+      />
 
       {isError && <Text style={styles.errorText}>Failed to fetch posts.</Text>}
     </View>
@@ -91,7 +94,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
   },
-
   loadingContainer: {
     ...StyleSheet.absoluteFillObject, // This covers the entire screen
     justifyContent: 'center',
@@ -116,5 +118,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  emptyText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#888',
   },
 });

@@ -19,24 +19,25 @@ import Home from './components/Home';
 import Login from './components/Login';
 import {View, Text, Button} from 'react-native';
 import TabTop from './components/TabTop';
-import { Provider } from 'react-redux';
-import { store } from './src/store';
+import {Provider} from 'react-redux';
+import {store} from './src/store';
 import Group from './components/Group/Group';
+import Keychains from './components/Keychain/Keychains';
+import { Redux } from './components/Redux/Redux';
+import CreatePost from './components/CreatePost/CreatePost';
+import Permission from './components/Permition/Permition';
 if (__DEV__) {
-  require("./ReactotronConfig");
+  require('./ReactotronConfig');
 }
 export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    
     <Provider store={store}>
-    <NavigationContainer>
-
-
-<Group/>
-     
-    </NavigationContainer>
+      <NavigationContainer>
+        {/* <Group /> */}
+        <Permission/>
+      </NavigationContainer>
     </Provider>
   );
 }

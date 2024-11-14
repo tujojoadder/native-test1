@@ -25,6 +25,7 @@ import CreatePost from './components/CreatePost/CreatePost';
 import Permission from './components/Permition/Permition';
 import { enableScreens } from 'react-native-screens';
 import StackNavigator from './components/TypeScriptFolder/StackNavigator/StackNavigator';
+import TopNavigator from './components/TypeScriptFolder/TopNavigator/TopNavigator';
 if (__DEV__) {
   require('./ReactotronConfig');
 }
@@ -35,7 +36,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         {/* <Group /> */}
-        <StackNavigator/>
+        <TopNavigator/>
       </NavigationContainer>
     </Provider>
   );

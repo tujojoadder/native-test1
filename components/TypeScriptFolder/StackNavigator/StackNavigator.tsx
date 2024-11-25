@@ -10,12 +10,14 @@ export type RootStackParamList = {
 };
 
 export default function StackNavigator() {
-
-
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
   return (
-    <Stack.Navigator initialRouteName="Home">
+    <Stack.Navigator
+     screenOptions={{
+        headerShown: false, // Disable the default app bar
+      }}
+    initialRouteName="Home">
     <Stack.Screen name="Home" component={HomeScreen} />
     <Stack.Screen name="Profile" component={ProfileScreen} />
   </Stack.Navigator>

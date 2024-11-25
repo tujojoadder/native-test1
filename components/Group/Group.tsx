@@ -10,8 +10,13 @@ import { useGetRandomGroupPostQuery } from '../../src/services/groupsApi';
 import {REACT_APP_LARAVEL_URL} from '@env';
 
 export default function Group() {
+
+  interface GroupData{
+    post_id:string
+  }
+
   const [page, setPage] = useState(1);
-  const [allPosts, setAllPosts] = useState([]);
+  const [allPosts, setAllPosts] = useState<GroupData[]>([]);
   const [hasMorePosts, setHasMorePosts] = useState(true);
 
   const { data, isFetching,error, isError, isSuccess, isLoading } = useGetRandomGroupPostQuery(page);
@@ -22,7 +27,7 @@ export default function Group() {
         setHasMorePosts(false);
       } else {
         const newPosts = data.data.filter(
-          newPost => !allPosts.some(post => post.post_id === newPost.post_id),
+          (newPost:GroupData) => !allPosts.some(post => post.post_id === newPost.post_id),
         );
         if (newPosts.length > 0) {
           setAllPosts(prevPosts => [...prevPosts, ...newPosts]);
@@ -38,7 +43,7 @@ export default function Group() {
     }
   }, [hasMorePosts, isFetching, isError, page]);
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }:{item:GroupData}) => (
     <View style={styles.postContainer}>
       <Text style={styles.postText}>Post ID: {item.post_id}</Text>
     </View>
@@ -65,7 +70,8 @@ export default function Group() {
         </View>
       )}
 
-      <FlatList
+      <FlatList<GroupData>
+      
         data={allPosts}
         renderItem={renderItem}
         keyExtractor={item => item.post_id.toString()}

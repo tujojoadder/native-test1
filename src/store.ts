@@ -3,9 +3,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { userAuthApi } from '../services/userAuthApi';
-import { userProfileApi } from '../services/userProfileApi';
 import { groupsApi } from './services/groupsApi';
 import  counterSlice  from '../components/Redux/ReduxSlice';
 import { profileApi } from './services/profileApi';
@@ -43,3 +40,7 @@ export const store = configureStore({
 
 // Persistor for managing persisted state
 export const persistor = persistStore(store);
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppDispatch = typeof store.dispatch;

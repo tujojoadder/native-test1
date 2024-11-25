@@ -26,6 +26,20 @@ import Permission from './components/Permition/Permition';
 import { enableScreens } from 'react-native-screens';
 import StackNavigator from './components/TypeScriptFolder/StackNavigator/StackNavigator';
 import TopNavigator from './components/TypeScriptFolder/TopNavigator/TopNavigator';
+import TabBottomNav from './components/TypeScriptFolder/TabBottomNav/TabBottomNav';
+import Counter from './components/CounterComponent/CounterComponent';
+import { ActivityIndicator, Provider as PaperProvider } from 'react-native-paper';
+
+const theme = {
+  colors: {
+    onPrimary: 'yellow', // Text color on primary backgrounds
+    primary: 'red',
+    onSurface:'black' ,
+    onBackground: 'darkgray',
+
+},
+};
+
 if (__DEV__) {
   require('./ReactotronConfig');
 }
@@ -33,11 +47,14 @@ enableScreens();
 export default function App() {
 
   return (
+    <PaperProvider theme={theme}>
     <Provider store={store}>
       <NavigationContainer>
-        {/* <Group /> */}
-        <TopNavigator/>
+        <TabBottomNav/>
+    {/*  <StackNavigator/> */}
+      {/*   <TabBottomNav/> */}
       </NavigationContainer>
     </Provider>
+    </PaperProvider>
   );
 }

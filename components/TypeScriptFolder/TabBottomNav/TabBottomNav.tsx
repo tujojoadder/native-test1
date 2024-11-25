@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Text, BottomNavigation } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -33,7 +33,12 @@ export default function BottomNavigator() {
           />
         );
       }}
-      barStyle={styles.bottomNavBar}
+      barStyle={{
+        backgroundColor: '#ffffff',
+        height: 53,
+        paddingBottom: 2,
+        justifyContent: 'center',
+      }}
       activeColor="tomato"
       inactiveColor="gray"
     />
@@ -42,7 +47,13 @@ export default function BottomNavigator() {
 
 function HomeTabBottom() {
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <Text variant="headlineMedium">Home Screen</Text>
     </View>
   );
@@ -50,7 +61,13 @@ function HomeTabBottom() {
 
 function ProfileTabBottom() {
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <Text variant="headlineMedium">Profile Screen</Text>
     </View>
   );
@@ -58,24 +75,14 @@ function ProfileTabBottom() {
 
 function SettingTabBottom() {
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
       <Text variant="headlineMedium">Setting Screen</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  bottomNavBar: {
-    backgroundColor: '#ffffff',
-    height: 53,
-    paddingBottom: 2,
-    
-    justifyContent: 'center',
-
-  },
-});
